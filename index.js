@@ -26,7 +26,10 @@ app.get("/logout", (req, res) => {
 });
 
 const corsOptions = {
-  origin: "https://cookies-cross-origin.herokuapp.com",
+  origin: [
+    "https://cookies-cross-origin.herokuapp.com",
+    "https://test-cookie-transfer.bubbleapps.io",
+  ],
 };
 
 app.get("/whoami", cors(corsOptions), (req, res) => {
