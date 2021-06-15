@@ -6,10 +6,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const cookieName = "Authorization";
+const loggedIn = "LoggedIn";
 
 app.use(cookieParser());
 app.get("/login", (req, res) => {
-  res.cookie(cookieName, "LoggedIn", {
+  res.cookie(cookieName, loggedIn, {
     httpOnly: true,
     signed: false,
     secure: false,
@@ -22,10 +23,16 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+app.get("/whoami", (req, res) => {
+  if (req.cookies[cookieName] === loggedIn) {
+    res.json({ res: "authenticated" });
+  } else {
+    res.json({ res: "not authenticated" });
+  }
+});
+
 app.get("/cookie", (req, res) => {
-  console.log(req.cookies[cookieName]);
-  if (req.cookies[cookieName] === "LoggedIn") {
-    console.log("sending file");
+  if (req.cookies[cookieName] === loggedIn) {
     res.sendFile("cookie.png", {
       root: path.join(__dirname, "public"),
     });
