@@ -30,6 +30,7 @@ const corsOptions = {
     "https://cookies-cross-origin.herokuapp.com",
     "https://test-cookie-transfer.bubbleapps.io",
   ],
+  credentials: true,
 };
 
 app.get("/whoami", cors(corsOptions), (req, res) => {
