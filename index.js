@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const path = require("path");
 
 const app = express();
@@ -8,6 +9,7 @@ const port = process.env.PORT || 3000;
 const cookieName = "Authorization";
 const loggedIn = "LoggedIn";
 
+app.use(cors());
 app.use(cookieParser());
 app.get("/login", (req, res) => {
   res.cookie(cookieName, loggedIn, {
@@ -23,7 +25,11 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/whoami", (req, res) => {
+const corsOptions = {
+  origin: "https://cookies-cross-origin.herokuapp.com",
+};
+
+app.get("/whoami", cors(corsOptions), (req, res) => {
   if (req.cookies[cookieName] === loggedIn) {
     res.json({ res: "authenticated" });
   } else {
